@@ -1,9 +1,9 @@
-import urllib
-from sets import Set
+import urllib.request
+#from sets import Set
 from bs4 import BeautifulSoup as bs
 import collections
 
-baseURL = 'http://home.htw-berlin.de/~iclassen/cmst/ue1/'
+baseURL = 'http://home.htw-berlin.de/~iclassen/cmst/ue1/docs/'
 
 seedList = ['http://home.htw-berlin.de/~iclassen/cmst/ue1/docs/d01.html','http://home.htw-berlin.de/~iclassen/cmst/ue1/docs/d06.html','http://home.htw-berlin.de/~iclassen/cmst/ue1/docs/d08.html']
 frontierList = []
@@ -16,9 +16,8 @@ def main ():
 
 		while len(frontierList) > 0:
 			currentURL = frontierList[0]
-			page = urllib.urlopen(currentURL)
+			page = urllib.request.urlopen(currentURL)
 			soup = bs(page.read(), "html.parser")
-
 			visitedList.add(currentURL)
 			frontierList.pop()[0]
 
@@ -29,6 +28,6 @@ def main ():
 					visitedList.add(url1)
 
 	for ele in visitedList:
-		print ele
+		print(ele)
 
 main()
