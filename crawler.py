@@ -29,6 +29,8 @@ def main ():
 					visitedList.add(url1)
 
 	for ele in visitedList:
-		print ele
+		print element
 
 main()
+
+#comment by trang
