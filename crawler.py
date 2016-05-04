@@ -1,5 +1,6 @@
-import urllib.request
+import urllib.request as ur
 from bs4 import BeautifulSoup as bs
+import numpy as np
 
 
 class Crawler:
@@ -9,6 +10,7 @@ class Crawler:
         self.__frontierList = []
         self.__visitedList = set()
         self.__crawl()
+        self.__test()
 
     def __crawl(self):
         for url in self.__seedList:
@@ -17,7 +19,7 @@ class Crawler:
 
             while len(self.__frontierList) > 0:
                 currenturl = self.__frontierList[0]
-                page = urllib.request.urlopen(currenturl)
+                page = ur.urlopen(currenturl)
                 soup = bs(page.read(), "html.parser")
                 self.__visitedList.add(currenturl)
                 self.__frontierList.pop()[0]
@@ -27,6 +29,10 @@ class Crawler:
                     if url1 not in self.__visitedList:
                         self.__frontierList.append(url1)
                         self.__visitedList.add(url1)
+
+    def __test(self):
+        m = np.matrix('1 2; 3 4')
+        print(m)
 
     def printLinks(self):
         for ele in self.__visitedList:
