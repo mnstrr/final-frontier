@@ -9,7 +9,7 @@ class Main:
 
     def __init__(self):
         crawler = Crawler(self.seedList, self.baseURL)
-        crawler.printLinks()
+        #crawler.printLinks()
         crawler.printLinkDict()
 
 
