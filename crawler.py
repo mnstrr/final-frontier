@@ -1,18 +1,20 @@
 import urllib.request
 from bs4 import BeautifulSoup as bs
+import re
 
 class Crawler:
-    def __init__(self, seedList, baseUrl):
+    def __init__(self, seedList, baseURL):
         self.__seedList = seedList
-        self.__baseUrl = baseUrl
+        self.__baseURL = baseURL
         self.__frontier = list()
         self.__visited = set()
+        self.__inURLs = dict()
         self.__crawl()
 
     def __crawl(self):
-        for url in self.__seedList:
+        for URL in self.__seedList:
 
-            self.__frontier.append(self.__baseUrl + url)
+            self.__frontier.append(self.__baseURL + URL)
 
             while len(self.__frontier) > 0:
                 currentURL = self.__frontier[0]
@@ -20,9 +22,13 @@ class Crawler:
                 soup = bs(page.read(), "html.parser")
                 self.__visited.add(currentURL)
                 self.__frontier.pop(0)
+                key = (re.search('(d[0-9]+)', currentURL)).group()
+                self.__inURLs[key] = []
 
                 for outURL in soup.find_all('a'):
-                    currentOutURL = self.__baseUrl + outURL.get('href')
+                    currentOutURL = self.__baseURL + outURL.get('href')
+                    value = (re.search('(d[0-9]+)', currentOutURL)).group()
+                    self.__inURLs[key].append(value)
                     if currentOutURL not in self.__visited:
                         self.__frontier.append(currentOutURL)
                         self.__visited.add(currentOutURL)
@@ -30,3 +36,5 @@ class Crawler:
     def printURLs(self):
         for ele in self.__visited:
             print(ele)
+        #print(self.__inURLs)
+
