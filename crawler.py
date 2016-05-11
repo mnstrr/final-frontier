@@ -1,61 +1,51 @@
-import urllib.request as ur
+import urllib.request
 from bs4 import BeautifulSoup as bs
 import numpy as np
+import re
 
 
 class Crawler:
-    def __init__(self, seedList, baseUrl):
+    def __init__(self, seedList, baseURL):
         self.__seedList = seedList
-        self.__baseUrl = baseUrl
-        self.__frontierList = []
-        self.__visitedList = set()
-        self.__linkList = {}
+        self.__baseURL = baseURL
+        self.__frontier = []
+        self.__visited = []
+        self.__inURLs = {}
+
         self.__crawl()
-        self.__test()
 
     def __crawl(self):
-        for url in self.__seedList:
-
-            self.__frontierList.append(url)
-
-            while len(self.__frontierList) > 0:
-                currenturl = self.__frontierList[0]
-                self.__pagerank(currenturl)
-                page = ur.urlopen(currenturl)
+        for URL in self.__seedList:
+            self.__frontier.append(self.__baseURL + URL)
+            while len(self.__frontier) > 0:
+                currentURL = self.__frontier[0]
+                page = urllib.request.urlopen(currentURL)
                 soup = bs(page.read(), "html.parser")
-                self.__visitedList.add(currenturl)
-                self.__frontierList.pop()[0]
+                self.__visited.append(currentURL)
+                self.__frontier.pop(0)
+                key = (re.search('(d[0-9]+)', currentURL)).group()
+                self.__inURLs[key] = []
 
-                curr_url_list = []
+                for outURL in soup.find_all('a'):
+                    currentOutURL = self.__baseURL + outURL.get('href')
+                    value = (re.search('(d[0-9]+)', currentOutURL)).group()
+                    self.__inURLs[key].append(value)
+                    if currentOutURL not in self.__visited:
+                        self.__frontier.append(currentOutURL)
+                        self.__visited.append(currentOutURL)
 
-                for link in soup.find_all('a'):
-                    url1 = self.__baseUrl + link.get('href')
+    def printURLs(self):
+        for ele in self.__visited:
+           print(ele)
+        #print(self.__inURLs)
 
-                    # add url1 to [K:currenturl, V: list/array of urls]
-                    curr_url_list.append(url1)
+    def printInURLs(self):
+        for key,values in self.__inURLs.items():
+            print(key)
+            print(values)
 
-                    if url1 not in self.__visitedList:
-                        self.__frontierList.append(url1)
-                        self.__visitedList.add(url1)
+    def getPageCount(self):
+        return len(self.__visited)
 
-                mini_dict = {currenturl: curr_url_list}
-                self.__linkList.update(mini_dict)
-
-
-
-
-        print("linkList")
-        print(self.__linkList)
-
-    def __test(self):
-        m = np.matrix('1 2; 3 4')
-        print(m)
-
-    def __pagerank(self, currenturl):
-        cu = currenturl
-        print("currenturl:")
-        print(cu)
-
-    def printLinks(self):
-        for ele in self.__visitedList:
-            print(ele)
+    def getInUrls(self):
+        return self.__inURLs
