@@ -7,9 +7,9 @@ class Crawler:
     def __init__(self, seedList, baseURL):
         self.__seedList = seedList
         self.__baseURL = baseURL
-        self.__frontier = list()
-        self.__visited = set()
-        self.__inURLs = dict()
+        self.__frontier = []
+        self.__visited = []
+        self.__inURLs = {}
         self.__crawl()
 
     def __crawl(self):
@@ -21,7 +21,7 @@ class Crawler:
                 currentURL = self.__frontier[0]
                 page = urllib.request.urlopen(currentURL)
                 soup = bs(page.read(), "html.parser")
-                self.__visited.add(currentURL)
+                self.__visited.append(currentURL)
                 self.__frontier.pop(0)
                 key = (re.search('(d[0-9]+)', currentURL)).group()
                 self.__inURLs[key] = []
@@ -32,7 +32,7 @@ class Crawler:
                     self.__inURLs[key].append(value)
                     if currentOutURL not in self.__visited:
                         self.__frontier.append(currentOutURL)
-                        self.__visited.add(currentOutURL)
+                        self.__visited.append(currentOutURL)
 
     def sortInURLs(self):
         self.__inURLs = OrderedDict(sorted(self.__inURLs.items()))
