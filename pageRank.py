@@ -1,5 +1,6 @@
-import numpy as np
+class PageRank:
+    def __init__(self, inURLs):
+        self.__inURLs = inURLs
 
-class Pagerank:
-    def __init__(self):
-        print("pagerank init")
+    def printInURLS(self):
+        print(self.__inURLs)

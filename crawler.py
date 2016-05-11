@@ -1,7 +1,7 @@
 import urllib.request
 from bs4 import BeautifulSoup as bs
 import re
-
+from collections import OrderedDict
 
 class Crawler:
     def __init__(self, seedList, baseURL):
@@ -34,18 +34,10 @@ class Crawler:
                         self.__frontier.append(currentOutURL)
                         self.__visited.append(currentOutURL)
 
-    def printURLs(self):
-        for ele in self.__visited:
-           print(ele)
-        #print(self.__inURLs)
+    def sortInURLs(self):
+        self.__inURLs = OrderedDict(sorted(self.__inURLs.items()))
+        for key in self.__inURLs:
+            self.__inURLs[key] = sorted(self.__inURLs[key])
 
-    def printInURLs(self):
-        for key,values in self.__inURLs.items():
-            print(key)
-            print(values)
-
-    def getPageCount(self):
-        return len(self.__visited)
-
-    def getInUrls(self):
+    def getInURLs(self):
         return self.__inURLs
