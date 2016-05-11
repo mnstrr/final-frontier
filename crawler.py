@@ -36,7 +36,8 @@ class Crawler:
 
     def sortInURLs(self):
         self.__inURLs = OrderedDict(sorted(self.__inURLs.items()))
-        print(self.__inURLs)
+        for key in self.__inURLs:
+            self.__inURLs[key] = sorted(self.__inURLs[key])
 
     def getInURLs(self):
         return self.__inURLs

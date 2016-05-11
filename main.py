@@ -10,6 +10,6 @@ class Main:
         crawler = Crawler(self.seedList, self.baseURL)
         crawler.sortInURLs()
         pageRank = PageRank(crawler.getInURLs())
-        #pageRank.calculate()
+        pageRank.printInURLS()
 
 Main()
