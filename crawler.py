@@ -34,7 +34,6 @@ class Crawler:
                         self.__visited.add(currentOutURL)
 
     def printURLs(self):
-        for ele in self.__visited:
-            print(ele)
-        #print(self.__inURLs)
-
+        #for ele in self.__visited:
+        #    print(ele)
+        print(self.__inURLs)
