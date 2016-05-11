@@ -1,7 +1,7 @@
-import urllib.request
 from bs4 import BeautifulSoup as bs
-import re
 from collections import OrderedDict
+import re
+import urllib.request
 
 
 class Crawler:
@@ -11,9 +11,8 @@ class Crawler:
         self.__frontier = []
         self.__visited = []
         self.__inURLs = {}
-        self.__crawl()
 
-    def __crawl(self):
+    def crawl(self):
         for URL in self.__seedList:
 
             self.__frontier.append(self.__baseURL + URL)

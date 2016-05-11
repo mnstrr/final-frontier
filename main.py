@@ -13,5 +13,4 @@ class Main:
         pageRank = PageRank(crawler.getInURLs())
         pageRank.printTransitions()
 
-
 Main()
