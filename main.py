@@ -1,4 +1,5 @@
 from crawler import Crawler
+from pagerank import Pagerank
 
 
 class Main:
@@ -7,9 +8,7 @@ class Main:
 
     def __init__(self):
         crawler = Crawler(self.seedList, self.baseURL)
-
-        crawler.printURLs()
-        crawler.createMatix()
-
+        crawler.printInURLs()
+        pageRank = Pagerank()
 
 Main()

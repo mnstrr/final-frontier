@@ -8,9 +8,9 @@ class Crawler:
     def __init__(self, seedList, baseURL):
         self.__seedList = seedList
         self.__baseURL = baseURL
-        self.__frontier = list()
-        self.__visited = set()
-        self.__inURLs = dict()
+        self.__frontier = []
+        self.__visited = []
+        self.__inURLs = {}
         self.__crawl()
 
     def __crawl(self):
@@ -22,7 +22,7 @@ class Crawler:
                 currentURL = self.__frontier[0]
                 page = urllib.request.urlopen(currentURL)
                 soup = bs(page.read(), "html.parser")
-                self.__visited.add(currentURL)
+                self.__visited.append(currentURL)
                 self.__frontier.pop(0)
                 key = (re.search('(d[0-9]+)', currentURL)).group()
                 self.__inURLs[key] = []
@@ -33,17 +33,17 @@ class Crawler:
                     self.__inURLs[key].append(value)
                     if currentOutURL not in self.__visited:
                         self.__frontier.append(currentOutURL)
-                        self.__visited.add(currentOutURL)
+                        self.__visited.append(currentOutURL)
 
 
     def createMatix(self):
-        matrix = np.zeros((len(self.__visitedList), len(self.__visitedList)))
+        matrix = np.zeros((len(self.__visited), len(self.__visited)))
         #print(matrix)
         for page in range(1 , len(self.__seedList)):
         #for page in self.__seedList:
-            for linkedPage in range(1 , len(self.__visitedList)):
+            for linkedPage in range(1 , len(self.__visited)):
             #for linkedPage in self.__visitedList:
-                if page != self.__visitedList:
+                if page != self.__visited:
                     matrix[page, linkedPage] = 1
                # elif page == self.__seedList:
                     # go to next row
@@ -56,6 +56,17 @@ class Crawler:
 #print(a)
 
     def printURLs(self):
-        #for ele in self.__visited:
-        #    print(ele)
-        print(self.__inURLs)
+        for ele in self.__visited:
+           print(ele)
+        #print(self.__inURLs)
+
+    def printInURLs(self):
+        for key,values in self.__inURLs.items():
+            print(key)
+            print(values)
+
+    def getPageCount(self):
+        return len(self.__visited)
+
+    def getInUrls(self):
+        return self.__inURLs
