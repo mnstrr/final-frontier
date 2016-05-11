@@ -40,3 +40,6 @@ class Crawler:
         for key,values in self.__linkDict.items():
             print(key)
             print(values)
+
+    def getDictionary(self):
+        return self.__linkDict

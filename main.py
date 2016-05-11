@@ -12,5 +12,7 @@ class Main:
         #crawler.printLinks()
         crawler.printLinkDict()
 
+        pagerank = Pagerank()
+        pagerank.makePagerank(crawler.getDictionary)
 
 Main()
