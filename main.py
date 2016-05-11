@@ -1,4 +1,5 @@
 from crawler import Crawler
+from pageRank import PageRank
 
 
 class Main:
@@ -7,6 +8,8 @@ class Main:
 
     def __init__(self):
         crawler = Crawler(self.seedList, self.baseURL)
-        crawler.printURLs()
+        crawler.sortInURLs()
+        pageRank = PageRank(crawler.getInURLs())
+        #pageRank.calculate()
 
 Main()
