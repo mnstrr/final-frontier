@@ -1,5 +1,6 @@
 import urllib.request
 from bs4 import BeautifulSoup as bs
+import numpy as np
 
 
 class Crawler:
@@ -20,7 +21,7 @@ class Crawler:
                 page = urllib.request.urlopen(currenturl)
                 soup = bs(page.read(), "html.parser")
                 self.__visitedList.add(currenturl)
-                self.__frontierList.pop()[0]
+                self.__frontierList.pop(0)
 
                 for link in soup.find_all('a'):
                     url1 = self.__baseUrl + link.get('href')
@@ -31,3 +32,22 @@ class Crawler:
     def printLinks(self):
         for ele in self.__visitedList:
             print(ele)
+
+    def createMatix(self):
+        matrix = np.zeros((len(self.__visitedList), len(self.__visitedList)))
+        #print(matrix)
+        for page in range(1 , len(self.__seedList)):
+        #for page in self.__seedList:
+            for linkedPage in range(1 , len(self.__visitedList)):
+            #for linkedPage in self.__visitedList:
+                if page != self.__visitedList:
+                    matrix[page, linkedPage] = 1
+               # elif page == self.__seedList:
+                    # go to next row
+                else:
+                    matrix[page, linkedPage] = 0
+
+        print(matrix)
+# create matrix of len(self.__visitedList)
+#a = np.matrix('1 2; 3 4')
+#print(a)
