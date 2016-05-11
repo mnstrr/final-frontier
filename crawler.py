@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup as bs
 import re
 from collections import OrderedDict
 
+
 class Crawler:
     def __init__(self, seedList, baseURL):
         self.__seedList = seedList
@@ -34,10 +35,18 @@ class Crawler:
                         self.__frontier.append(currentOutURL)
                         self.__visited.append(currentOutURL)
 
-    def sortInURLs(self):
-        self.__inURLs = OrderedDict(sorted(self.__inURLs.items()))
-        for key in self.__inURLs:
-            self.__inURLs[key] = sorted(self.__inURLs[key])
+        self.__inURLs = self.__sortDictionary(self.__inURLs)
+
+    def __sortDictionary(self, dict):
+        sorteddict = OrderedDict(sorted(dict.items()))
+        for key in sorteddict:
+            sorteddict[key] = sorted(sorteddict[key])
+        return sorteddict
 
     def getInURLs(self):
         return self.__inURLs
+
+    def printInURLs(self):
+        for key, values in self.__inURLs.items():
+            print(key)
+            print(values)

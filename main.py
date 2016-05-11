@@ -8,8 +8,10 @@ class Main:
 
     def __init__(self):
         crawler = Crawler(self.seedList, self.baseURL)
-        crawler.sortInURLs()
+        # crawler.printInURLs()
+
         pageRank = PageRank(crawler.getInURLs())
-        pageRank.printInURLS()
+        pageRank.printTransitions()
+
 
 Main()
