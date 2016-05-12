@@ -1,24 +1,62 @@
+from collections import OrderedDict
 import numpy as np
+#regular expression
+import re
 
-class Pagerank:
-    def __init__(self , urls ):
-        self.__urls = urls
-        print(len(self.__urls))
+class PageRank:
+    def __init__(self, inURLs):
+        self.__inURLs = inURLs
+        self.__damping = 0.95
+        self.__teleport = 1 - self.__damping
+        self._delta = 0.04
+        self.__pagecount = len(self.__inURLs)
+        self.__transitionPorpabilities = self.__calculateTransition()
+        self.__transitionMatrix = self.__createMatix()
 
-    def createMatix(self):
-        matrix = np.zeros((len(self.__urls), len(self.__urls)))
-        # print(matrix)
-        for page in range(1, len(self.__urls)):
-            # for page in self.__seedList:
-            for linkedPage in range(1, len(self.__urls)):
-                # for linkedPage in self.__visitedList:
-                if page != self.__urls:
-                    matrix[page, linkedPage] = 1
-                # elif page == self.__seedList:
-                    # go to next row
-                else:
-                    matrix[page, linkedPage] = 0
-        print(matrix)
-        # create matrix of len(self.__visitedList)
-        # a = np.matrix('1 2; 3 4')
-        # print(a)
+    def __calculateTransition(self):
+        transitions = {}
+
+        for url in self.__inURLs:
+            outlinkCount = len(self.__inURLs[url])
+            transitions[url] = []
+            if outlinkCount > 0:
+                for outlink in self.__inURLs[url]:
+                    transitions[url].append(
+                        [(outlink), (1.0 / outlinkCount) * self.__damping + (self.__teleport / self.__pagecount)])
+            else:
+                transitions[url].append([('d09'),1 / self.__pagecount])
+        transitions = self.__sortDictionary(transitions)
+        return transitions
+
+    def __sortDictionary(self, dict):
+        sorteddict = OrderedDict(sorted(dict.items()))
+        return sorteddict
+
+    def printTransitions(self):
+        for key, values in self.__transitionPorpabilities.items():
+            print(key)
+            print(values)
+
+
+
+
+
+
+
+    def __createMatix(self):
+        #create empty matrix
+        matrix = np.zeros((self.__pagecount, self.__pagecount))
+        matrix[:] = (self.__teleport / self.__pagecount)
+
+        for row, rowVal in self.__transitionPorpabilities.items():
+            rowNr = int(re.sub('[d0]', '', row))
+            for col in rowVal:
+                colNr = int(re.sub('[d0]', '', col[0]))
+                colVal = col[1]
+                if rowNr == 8:
+                    return matrix
+            matrix[rowNr - 1, colNr - 1] = colVal
+
+    def printMatix(self):
+        print(self.__transitionMatrix)
+
