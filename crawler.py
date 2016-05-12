@@ -1,6 +1,7 @@
 import urllib.request
 from bs4 import BeautifulSoup as bs
 import numpy as np
+#regular expression
 import re
 
 
@@ -10,6 +11,7 @@ class Crawler:
         self.__baseURL = baseURL
         self.__frontier = []
         self.__visited = []
+        #dictionary
         self.__inURLs = {}
         self.__crawl()
 
@@ -35,26 +37,6 @@ class Crawler:
                         self.__frontier.append(currentOutURL)
                         self.__visited.append(currentOutURL)
 
-
-    def createMatix(self):
-        matrix = np.zeros((len(self.__visited), len(self.__visited)))
-        #print(matrix)
-        for page in range(1 , len(self.__seedList)):
-        #for page in self.__seedList:
-            for linkedPage in range(1 , len(self.__visited)):
-            #for linkedPage in self.__visitedList:
-                if page != self.__visited:
-                    matrix[page, linkedPage] = 1
-               # elif page == self.__seedList:
-                    # go to next row
-                else:
-                    matrix[page, linkedPage] = 0
-
-        print(matrix)
-# create matrix of len(self.__visitedList)
-#a = np.matrix('1 2; 3 4')
-#print(a)
-
     def printURLs(self):
         for ele in self.__visited:
            print(ele)
@@ -65,8 +47,7 @@ class Crawler:
             print(key)
             print(values)
 
-    def getPageCount(self):
-        return len(self.__visited)
 
+    #dictionary
     def getInUrls(self):
         return self.__inURLs

@@ -9,6 +9,6 @@ class Main:
     def __init__(self):
         crawler = Crawler(self.seedList, self.baseURL)
         crawler.printInURLs()
-        pageRank = Pagerank()
+        pageRank = Pagerank(crawler.getInUrls())
 
 Main()
