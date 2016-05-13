@@ -3,59 +3,53 @@ import numpy as np
 import re
 
 class PageRank:
-    def __init__(self, internal_urls):
-        self.__internal_urls = internal_urls
+    def __init__(self, internal_url_structure):
+        np.set_printoptions(linewidth=200)
+        self.__internal_url_structure = internal_url_structure
         self.__DAMPING_FACTOR = 0.95
         self.__TELEPORTATION_RATE = 1 - self.__DAMPING_FACTOR
         self.__DELTA = 0.04
-        self.__COLLECTION_SIZE = len(self.__internal_urls)
+        self.__COLLECTION_SIZE = len(self.__internal_url_structure)
         self.__transition_prob = self.__calc_transition_prob()
-        self.__transition_matrix = self.__create_matrix()
+        self.__transition_prob_matrix = self.__create_matrix()
 
 
     def __calc_transition_prob(self):
         transitions = {}
 
-        for url in self.__internal_urls:
-            outlinkCount = len(self.__internal_urls[url])
-            transitions[url] = []
-            if outlinkCount > 0:
-                for outlink in self.__internal_urls[url]:
-                    transitions[url].append(
-                        [(outlink), (1.0 / outlinkCount) * self.__DAMPING_FACTOR + (self.__TELEPORTATION_RATE / self.__COLLECTION_SIZE)])
+        for key in self.__internal_url_structure:
+            internal_urls_size = len(self.__internal_url_structure[key])
+            transitions[key] = []
+            if internal_urls_size > 0:
+                for internal_url in self.__internal_url_structure[key]:
+                    transitions[key].append([(internal_url), (1.0 / internal_urls_size) * self.__DAMPING_FACTOR + (self.__TELEPORTATION_RATE / self.__COLLECTION_SIZE)])
             else:
-                transitions[url].append([('d00'), 1 / self.__COLLECTION_SIZE])
+                transitions[key].append([('d00'), 1 / self.__COLLECTION_SIZE])
+        print(transitions)
         transitions = self.__sort_url_structure(transitions)
         return transitions
 
     def __sort_url_structure(self, dict):
-        sorteddict = OrderedDict(sorted(dict.items()))
-        return sorteddict
-
-    def print_transitions(self):
-        for key, values in self.__transition_prob.items():
-            print(key)
-            print(values)
-
+        sorted_dict = OrderedDict(sorted(dict.items()))
+        return sorted_dict
 
     def __create_matrix(self):
-        #create empty matrix
         matrix = np.zeros((self.__COLLECTION_SIZE, self.__COLLECTION_SIZE))
         matrix[:] = (self.__TELEPORTATION_RATE / self.__COLLECTION_SIZE)
 
-        for row, rowVal in self.__transition_prob.items():
-            rowNr = int(re.sub('[d0]', '', row))
-            for col in rowVal:
-                if rowNr == 8:
-                    colVal = col[1]
-                    matrix[rowNr - 1, :] = colVal
+        for row, row_val in self.__transition_prob.items():
+            row_index = int(re.sub('[d0]', '', row))
+            for col in row_val:
+                if row_index == 8:
+                    col_val = col[1]
+                    matrix[row_index - 1, :] = col_val
                     return matrix
-                colNr = int(re.sub('[d0]', '', col[0]))
-                colVal = col[1]
-                matrix[rowNr - 1, colNr - 1] = colVal
+                col_index = int(re.sub('[d0]', '', col[0]))
+                col_val = col[1]
+                matrix[row_index - 1, col_index - 1] = col_val
 
     def print_matrix(self):
-        print(self.__transition_matrix)
+        print(self.__transition_prob_matrix)
 
     def calc_page_rank(self):
         pageRankVal = []
@@ -74,7 +68,7 @@ class PageRank:
         # step0 mult with transition matrix
         betragV = np.zeros((1, self.__COLLECTION_SIZE))
         while (delta > 0.04):
-            next_step = np.mat(prev_step) * np.mat(self.__transition_matrix)
+            next_step = np.mat(prev_step) * np.mat(self.__transition_prob_matrix)
             print('next step : ' + str(next_step))
             pageRankVal.append(next_step)
             # add new diff
@@ -89,5 +83,7 @@ class PageRank:
             prev_step = next_step
             print('delta : ' + str(delta))
 
-
-
+    def print_transitions(self):
+        for key, values in self.__transition_prob.items():
+            print(key)
+            print(values)

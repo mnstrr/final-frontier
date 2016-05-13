@@ -50,7 +50,7 @@ class Crawler:
         return s[start:end]
 
 #PUBLIC FUNCTIONS:
-    def get_internal_urls(self):
+    def get_internal_url_structure(self):
         return self.__internal_url_structure
 
     def print_internal_urls(self):
