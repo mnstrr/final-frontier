@@ -58,11 +58,18 @@ class PageRank:
     def printMatix(self):
         print(self.__transitionMatrix)
 
-    def calcMatix(self):
-        matrix = np.zeros((self.__pagecount, self.__pagecount))
-        matrix[:] = (1.0 / self.__pagecount)
+    def calcPageRank(self):
+        step0 = np.zeros((1, self.__pagecount))
+        step0[:] = (1.0 / self.__pagecount)
+        #print(step0)
 
-        product = np.mat(matrix)*np.mat(self.__transitionMatrix)
-        print(product)
-
+        step1 = np.mat(step0)*np.mat(self.__transitionMatrix)
+        diff = step1-step0
+        print(diff)
+        betragV = np.zeros((1, self.__pagecount))
+        for indx, val in enumerate(diff):
+            betragV[indx] = abs(val)
+            #delta = np.linalg.norm(step1-step0) + np.linalg.norm(step1-step0)
+        delta = np.sum(betragV)
+        print(delta)
 
