@@ -1,3 +1,4 @@
+# imports
 from crawler import Crawler
 from pageRank import PageRank
 
@@ -8,8 +9,10 @@ class Main:
 
     def __init__(self):
         crawler = Crawler(self.seed_urls, self.base_url)
-        crawler.print_internal_urls()
-        pageRank = PageRank(crawler.get_internal_url_structure())
-        pageRank.calc_page_rank()
+        crawler.print_internal_url_structure()
+
+        page_rank = PageRank(crawler.get_internal_url_structure())
+        page_rank.print_transition_prob_tmp()
+        page_rank.print_transition_prob_matrix()
 
 Main()

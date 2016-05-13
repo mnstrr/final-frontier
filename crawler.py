@@ -1,6 +1,6 @@
+# imports
 from bs4 import BeautifulSoup as bs
 from collections import OrderedDict
-import re
 import urllib.request
 
 
@@ -13,7 +13,6 @@ class Crawler:
         self.__internal_url_structure = {}
         self.__crawl()
 
-#PRIVATE FUNCTIONS:
     def __crawl(self):
         for url in self.__seed_urls:
 
@@ -49,12 +48,11 @@ class Crawler:
         end = s.rfind(last)
         return s[start:end]
 
-#PUBLIC FUNCTIONS:
     def get_internal_url_structure(self):
         return self.__internal_url_structure
 
-    def print_internal_urls(self):
-        print('#INTERNAL URL STRUCTURE:')
+    def print_internal_url_structure(self):
+        print('# INTERNAL URL STRUCTURE:')
         for key, value in self.__internal_url_structure.items():
             print(key+':' + ','.join(value))
         print('--------------------')
