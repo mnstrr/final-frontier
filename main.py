@@ -12,6 +12,7 @@ class Main:
         pageRank = PageRank(crawler.getInURLs())
         pageRank.printTransitions()
         pageRank.printMatix()
+        pageRank.calcMatix()
 
 
 Main()

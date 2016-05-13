@@ -38,11 +38,6 @@ class PageRank:
             print(values)
 
 
-
-
-
-
-
     def __createMatix(self):
         #create empty matrix
         matrix = np.zeros((self.__pagecount, self.__pagecount))
@@ -61,4 +56,12 @@ class PageRank:
 
     def printMatix(self):
         print(self.__transitionMatrix)
+
+    def calcMatix(self):
+        matrix = np.zeros((self.__pagecount, self.__pagecount))
+        matrix[:] = (1.0 / self.__pagecount)
+
+        product = np.mat(matrix)*np.mat(self.__transitionMatrix)
+        print(product)
+
 
