@@ -1,6 +1,6 @@
 import urllib.request
 from bs4 import BeautifulSoup as bs
-import numpy as np
+#regular expression
 import re
 from collections import OrderedDict
 
@@ -11,6 +11,7 @@ class Crawler:
         self.__baseURL = baseURL
         self.__frontier = []
         self.__visited = []
+        #dictionary
         self.__inURLs = {}
 
         self.__crawl()
@@ -51,9 +52,7 @@ class Crawler:
             print(key)
             print(values)
 
-    def getPageCount(self):
-        return len(self.__visited)
-
+    #dictionary
     def getInUrls(self):
         return self.__inURLs
 
