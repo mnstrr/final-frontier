@@ -58,11 +58,37 @@ class PageRank:
     def printMatix(self):
         print(self.__transitionMatrix)
 
-    def calcMatix(self):
-        matrix = np.zeros((self.__pagecount, self.__pagecount))
-        matrix[:] = (1.0 / self.__pagecount)
+    def calcPageRank(self):
+        pageRankVal = []
+        delta = 1
+        #step0
+        prev_step = np.zeros((1, self.__pagecount))
+        prev_step[:] = (1.0 / self.__pagecount)
 
-        product = np.mat(matrix)*np.mat(self.__transitionMatrix)
-        print(product)
+        pageRankVal.append(prev_step)
+        print('Page Rank : '+str(pageRankVal))
+        diff_V = []
+
+
+        #delta_V = []
+
+        # step0 mult with transition matrix
+        betragV = np.zeros((1, self.__pagecount))
+        while (delta > 0.04):
+            next_step = np.mat(prev_step) * np.mat(self.__transitionMatrix)
+            print('next step : ' + str(next_step))
+            pageRankVal.append(next_step)
+            # add new diff
+            tmp_diff = abs(next_step - prev_step)
+
+            print('diff : ' + str(tmp_diff))
+            diff_V.append(next_step - prev_step)
+
+            for indx, val in enumerate(tmp_diff):
+                betragV[indx] = abs(val)
+            delta = np.sum(betragV)
+            prev_step = next_step
+            print('delta : ' + str(delta))
+
 
 
