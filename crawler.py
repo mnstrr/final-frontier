@@ -1,5 +1,6 @@
 import urllib.request
 from bs4 import BeautifulSoup as bs
+#regular expression
 import re
 from collections import OrderedDict
 
@@ -10,6 +11,7 @@ class Crawler:
         self.__baseURL = baseURL
         self.__frontier = []
         self.__visited = []
+        #dictionary
         self.__inURLs = {}
         self.__crawl()
 
@@ -50,3 +52,7 @@ class Crawler:
         for key, values in self.__inURLs.items():
             print(key)
             print(values)
+
+    #dictionary
+    def getInUrls(self):
+        return self.__inURLs
