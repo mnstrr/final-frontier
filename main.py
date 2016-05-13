@@ -8,6 +8,7 @@ class Main:
 
     def __init__(self):
         crawler = Crawler(self.seed_urls, self.base_url)
+        crawler.print_internal_urls()
         pageRank = PageRank(crawler.get_internal_urls())
         pageRank.calc_page_rank()
 

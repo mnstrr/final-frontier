@@ -54,6 +54,7 @@ class Crawler:
         return self.__internal_url_structure
 
     def print_internal_urls(self):
-        for key, values in self.__internal_url_structure.items():
-            print(key)
-            print(values)
+        print('#INTERNAL URL STRUCTURE:')
+        for key, value in self.__internal_url_structure.items():
+            print(key+':' + ','.join(value))
+        print('--------------------')
