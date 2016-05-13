@@ -13,6 +13,7 @@ class Crawler:
         self.__internal_url_structure = {}
         self.__crawl()
 
+#PRIVATE FUNCTIONS:
     def __crawl(self):
         for url in self.__seed_urls:
 
@@ -24,12 +25,12 @@ class Crawler:
                 soup = bs(page.read(), "html.parser")
                 self.__visited.append(current_url)
                 self.__frontier.pop(0)
-                key = (re.search('(d[0-9]+)', current_url)).group()
+                key = self.__find_doc_title(current_url, '/', '.')
                 self.__internal_url_structure[key] = []
 
                 for internal_url in soup.find_all('a'):
                     current_internal_url = self.__base_url + internal_url.get('href')
-                    value = (re.search('(d[0-9]+)', current_internal_url)).group()
+                    value = self.__find_doc_title(current_internal_url, '/', '.')
                     self.__internal_url_structure[key].append(value)
                     if current_internal_url not in self.__visited:
                         self.__frontier.append(current_internal_url)
@@ -43,6 +44,12 @@ class Crawler:
             sorted_dict[key] = sorted(sorted_dict[key])
         return sorted_dict
 
+    def __find_doc_title(self, s, first, last):
+        start = s.rfind(first) + len(first)
+        end = s.rfind(last)
+        return s[start:end]
+
+#PUBLIC FUNCTIONS:
     def get_internal_urls(self):
         return self.__internal_url_structure
 
