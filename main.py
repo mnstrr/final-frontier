@@ -3,16 +3,12 @@ from pageRank import PageRank
 
 
 class Main:
-    baseURL = 'http://home.htw-berlin.de/~iclassen/cmst/ue1/docs/'
-    seedList = ['d01.html', 'd06.html', 'd08.html']
+    base_url = 'http://home.htw-berlin.de/~iclassen/cmst/ue1/docs/'
+    seed_urls = ['d01.html', 'd06.html', 'd08.html']
 
     def __init__(self):
-        crawler = Crawler(self.seedList, self.baseURL)
-        #crawler.printInURLs()
-        pageRank = PageRank(crawler.getInURLs())
-        #pageRank.printTransitions()
-        #pageRank.printMatix()
-        pageRank.calcPageRank()
-
+        crawler = Crawler(self.seed_urls, self.base_url)
+        pageRank = PageRank(crawler.get_internal_urls())
+        pageRank.calc_page_rank()
 
 Main()

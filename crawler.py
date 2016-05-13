@@ -1,58 +1,52 @@
-import urllib.request
 from bs4 import BeautifulSoup as bs
-#regular expression
-import re
 from collections import OrderedDict
+import re
+import urllib.request
 
 
 class Crawler:
-    def __init__(self, seedList, baseURL):
-        self.__seedList = seedList
-        self.__baseURL = baseURL
+    def __init__(self, seed_urls, base_url):
+        self.__seed_urls = seed_urls
+        self.__base_url = base_url
         self.__frontier = []
         self.__visited = []
-        #dictionary
-        self.__inURLs = {}
+        self.__internal_url_structure = {}
         self.__crawl()
 
     def __crawl(self):
-        for URL in self.__seedList:
+        for url in self.__seed_urls:
 
-            self.__frontier.append(self.__baseURL + URL)
+            self.__frontier.append(self.__base_url + url)
 
             while len(self.__frontier) > 0:
-                currentURL = self.__frontier[0]
-                page = urllib.request.urlopen(currentURL)
+                current_url = self.__frontier[0]
+                page = urllib.request.urlopen(current_url)
                 soup = bs(page.read(), "html.parser")
-                self.__visited.append(currentURL)
+                self.__visited.append(current_url)
                 self.__frontier.pop(0)
-                key = (re.search('(d[0-9]+)', currentURL)).group()
-                self.__inURLs[key] = []
+                key = (re.search('(d[0-9]+)', current_url)).group()
+                self.__internal_url_structure[key] = []
 
-                for outURL in soup.find_all('a'):
-                    currentOutURL = self.__baseURL + outURL.get('href')
-                    value = (re.search('(d[0-9]+)', currentOutURL)).group()
-                    self.__inURLs[key].append(value)
-                    if currentOutURL not in self.__visited:
-                        self.__frontier.append(currentOutURL)
-                        self.__visited.append(currentOutURL)
+                for internal_url in soup.find_all('a'):
+                    current_internal_url = self.__base_url + internal_url.get('href')
+                    value = (re.search('(d[0-9]+)', current_internal_url)).group()
+                    self.__internal_url_structure[key].append(value)
+                    if current_internal_url not in self.__visited:
+                        self.__frontier.append(current_internal_url)
+                        self.__visited.append(current_internal_url)
 
-        self.__inURLs = self.__sortDictionary(self.__inURLs)
+        self.__internal_url_structure = self.__sort_dictionary(self.__internal_url_structure)
 
-    def __sortDictionary(self, dict):
-        sorteddict = OrderedDict(sorted(dict.items()))
-        for key in sorteddict:
-            sorteddict[key] = sorted(sorteddict[key])
-        return sorteddict
+    def __sort_dictionary(self, dict):
+        sorted_dict = OrderedDict(sorted(dict.items()))
+        for key in sorted_dict:
+            sorted_dict[key] = sorted(sorted_dict[key])
+        return sorted_dict
 
-    def getInURLs(self):
-        return self.__inURLs
+    def get_internal_urls(self):
+        return self.__internal_url_structure
 
-    def printInURLs(self):
-        for key, values in self.__inURLs.items():
+    def print_internal_urls(self):
+        for key, values in self.__internal_url_structure.items():
             print(key)
             print(values)
-
-    #dictionary
-    def getInUrls(self):
-        return self.__inURLs
