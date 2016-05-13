@@ -24,7 +24,7 @@ class PageRank:
                     transitions[url].append(
                         [(outlink), (1.0 / outlinkCount) * self.__damping + (self.__teleport / self.__pagecount)])
             else:
-                transitions[url].append([('d08'),1 / self.__pagecount])
+                transitions[url].append([('d00'), 1 / self.__pagecount])
         transitions = self.__sortDictionary(transitions)
         return transitions
 
@@ -51,10 +51,12 @@ class PageRank:
         for row, rowVal in self.__transitionPorpabilities.items():
             rowNr = int(re.sub('[d0]', '', row))
             for col in rowVal:
+                if rowNr == 8:
+                    colVal = col[1]
+                    matrix[rowNr - 1, :] = colVal
+                    return matrix
                 colNr = int(re.sub('[d0]', '', col[0]))
                 colVal = col[1]
-                if rowNr == 8:
-                    return matrix
                 matrix[rowNr - 1, colNr - 1] = colVal
 
     def printMatix(self):
