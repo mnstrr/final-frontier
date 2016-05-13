@@ -8,10 +8,11 @@ class PageRank:
         self.__inURLs = inURLs
         self.__damping = 0.95
         self.__teleport = 1 - self.__damping
-        self._delta = 0.04
+        self.__delta = 0.04
         self.__pagecount = len(self.__inURLs)
-        self.__transitionPorpabilities = self.__calculateTransition()
+        self.__transitionProbabilities = self.__calculateTransition()
         self.__transitionMatrix = self.__createMatix()
+
 
     def __calculateTransition(self):
         transitions = {}
@@ -33,7 +34,7 @@ class PageRank:
         return sorteddict
 
     def printTransitions(self):
-        for key, values in self.__transitionPorpabilities.items():
+        for key, values in self.__transitionProbabilities.items():
             print(key)
             print(values)
 
@@ -43,7 +44,7 @@ class PageRank:
         matrix = np.zeros((self.__pagecount, self.__pagecount))
         matrix[:] = (self.__teleport / self.__pagecount)
 
-        for row, rowVal in self.__transitionPorpabilities.items():
+        for row, rowVal in self.__transitionProbabilities.items():
             rowNr = int(re.sub('[d0]', '', row))
             for col in rowVal:
                 if rowNr == 8:
