@@ -25,30 +25,7 @@ class Crawler:
                 key = self.__find_doc_title(current_url, '/', '.')
                 self.__internal_url_structure[key] = []
 
-                #for string in soup.stripped_strings:
-                #    print(repr(string))
-
-                #print(soup.body.a.previous_sibling)
-
-                #print(soup.find_all(self.is_link()))
-
-                #print(soup.body.find_all(text=True))
-
-                #for e in soup.findAll('br'):
-                #    e.extract()
-
-                unwanted_tags = ['br']
-                for tag in unwanted_tags:
-                    for match in soup.find_all(tag):
-                        match.unwrap()
-
-                for text in soup.body.find_all(text=True):
-                    if (text.parent.name != "a"):
-
-                        split_list = text.split()
-                        if split_list:
-                            print(text.split())
-
+                self.__tokenize(soup)
 
                 for internal_url in soup.find_all('a'):
                     current_internal_url = self.__base_url + internal_url.get('href')
@@ -79,3 +56,41 @@ class Crawler:
         for key, value in self.__internal_url_structure.items():
             print(key+':' + ','.join(value))
         print('--------------------')
+
+
+    def __tokenize(self, soup):
+        document_tokens = []
+
+        # removes all line breaks
+        strained_soup = self.__remove_tags(["br"], soup)
+
+        # only iterate over text content, should be obvious, but what everest
+        for text in strained_soup.body.find_all(text=True):
+
+            # ignore all links
+            if (text.parent.name != "a"):
+
+                # removes interpunction, in this case "." and ","
+                text = self.__remove_interpunction(str(text))
+
+                # splits into separate words
+                token_list = text.split()
+
+                # if list not empty
+                if token_list:
+
+                    #concatenate all lists
+                    document_tokens.extend(token_list)
+
+        print(document_tokens)
+        return document_tokens
+
+    def __remove_tags(self, unwanted_tags, soup):
+        for tag in unwanted_tags:
+            for match in soup.find_all(tag):
+                match.unwrap()
+        return soup
+
+    def __remove_interpunction(self, text):
+        text_neu = re.sub(r'[\,\.]', '', text)
+        return text_neu
