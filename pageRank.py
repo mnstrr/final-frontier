@@ -54,22 +54,28 @@ class PageRank:
     def __calc_page_rank(self):
 
         step = 0
-        current_delta = 9999
         initial_step = np.full((1, self.__COLLECTION_SIZE), 1/self.__COLLECTION_SIZE, dtype=np.float)
-        initial_step = np.asmatrix(initial_step)
         prev_step = initial_step
 
         page_rank = []
         page_rank.append(initial_step)
 
-        while(current_delta > self.__DELTA):
+        print('# PAGE RANK:')
+        print(initial_step)
+        # do...while loop
+        while True:
             step += 1
-            current_step = np.mat(prev_step) * np.mat(self.__transition_prob)
+            current_step = np.dot(prev_step, self.__transition_prob)
+            print(current_step)
             current_delta = np.sum(abs(current_step - prev_step))
 
             page_rank.append(current_step)
             prev_step = current_step
 
+            if (current_delta < self.__DELTA):
+                break
+
+        print('--------------------')
         return page_rank
 
     def __sort_url_structure(self, dict):
