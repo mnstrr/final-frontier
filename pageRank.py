@@ -30,6 +30,8 @@ class PageRank:
             else:
                 transition_prob_tmp[key].append([(None), 1 / self.__COLLECTION_SIZE])
         transition_prob_tmp = self.__sort_url_structure(transition_prob_tmp)
+
+        self.__print_transition_prob_tmp(transition_prob_tmp)
         return transition_prob_tmp
 
     def __make_transition_prob_matrix(self):
@@ -43,6 +45,7 @@ class PageRank:
                 if col[0] is None:
                     col_val = col[1]
                     matrix[row_index - 1, :] = col_val
+                    self.__print_transition_prob_matrix(matrix)
                     return matrix
                 col_index = int(re.sub('[d0]', '', col[0]))
                 col_val = col[1]
@@ -73,18 +76,18 @@ class PageRank:
         sorted_dict = OrderedDict(sorted(dict.items()))
         return sorted_dict
 
-    def print_transition_prob_tmp(self):
+    def __print_transition_prob_tmp(self, transition_prob_tmp):
         print('# TEMPORARY TRANSITION PROB: ')
-        for key, values in self.__transition_prob_tmp.items():
+        for key, values in transition_prob_tmp.items():
             s = ''
             for item in values:
                 s +='[' + str(item[0]) +', ' + "%0.3f" % item[1] + ']; '
             print(key + ': ' + s)
         print('--------------------')
 
-    def print_transition_prob_matrix(self):
+    def __print_transition_prob_matrix(self, transition_prob_matrix):
         print('# FINAL TRANSITION PROB MATRIX:')
-        print(self.__transition_prob)
+        print(transition_prob_matrix)
         print('--------------------')
 
 

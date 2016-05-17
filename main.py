@@ -10,7 +10,7 @@ class Main:
     def __init__(self):
         crawler = Crawler(self.seed_urls, self.base_url)
         page_rank = PageRank(crawler.get_internal_url_structure())
-        page_rank.print_transition_prob_tmp()
-        page_rank.print_transition_prob_matrix()
+        #page_rank.print_transition_prob_tmp()
+        #page_rank.print_transition_prob_matrix()
 
 Main()
