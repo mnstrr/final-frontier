@@ -1,7 +1,9 @@
 # imports
 from bs4 import BeautifulSoup as bs
+from bs4 import NavigableString
 from collections import OrderedDict
 import urllib.request
+import pdb
 
 
 class Crawler:
@@ -24,6 +26,31 @@ class Crawler:
                 self.__frontier.pop(0)
                 key = self.__find_doc_title(current_url, '/', '.')
                 self.__internal_url_structure[key] = []
+
+                #for string in soup.stripped_strings:
+                #    print(repr(string))
+
+                #print(soup.body.a.previous_sibling)
+
+                #print(soup.find_all(self.is_link()))
+
+                #print(soup.body.find_all(text=True))
+
+                #for e in soup.findAll('br'):
+                #    e.extract()
+
+                unwanted_tags = ['br']
+                for tag in unwanted_tags:
+                    for match in soup.find_all(tag):
+                        match.unwrap()
+
+                for text in soup.body.find_all(text=True):
+                    if (text.parent.name != "a"):
+
+                        split_list = text.split()
+                        if split_list:
+                            print(text.split())
+
 
                 for internal_url in soup.find_all('a'):
                     current_internal_url = self.__base_url + internal_url.get('href')
