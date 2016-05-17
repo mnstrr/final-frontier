@@ -1,10 +1,8 @@
 # imports
 from bs4 import BeautifulSoup as bs
-from bs4 import NavigableString
 from collections import OrderedDict
 import urllib.request
-import pdb
-
+import re
 
 class Crawler:
     def __init__(self, seed_urls, base_url):
