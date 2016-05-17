@@ -36,6 +36,7 @@ class Crawler:
                         self.__visited.append(current_internal_url)
 
         self.__internal_url_structure = self.__sort_dictionary(self.__internal_url_structure)
+        self.__print_internal_url_structure()
 
     def __sort_dictionary(self, dict):
         sorted_dict = OrderedDict(sorted(dict.items()))
@@ -48,11 +49,11 @@ class Crawler:
         end = s.rfind(last)
         return s[start:end]
 
-    def get_internal_url_structure(self):
-        return self.__internal_url_structure
-
-    def print_internal_url_structure(self):
+    def __print_internal_url_structure(self):
         print('# INTERNAL URL STRUCTURE:')
         for key, value in self.__internal_url_structure.items():
-            print(key+':' + ','.join(value))
+            print(key + ':' + ','.join(value))
         print('--------------------')
+
+    def get_internal_url_structure(self):
+        return self.__internal_url_structure
