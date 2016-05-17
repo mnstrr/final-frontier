@@ -51,7 +51,6 @@ class PageRank:
                 matrix[row_index - 1, col_index - 1] = col_val
 
     def __calc_page_rank(self):
-
         step = 0
         initial_step = np.full((1, self.__COLLECTION_SIZE), 1/self.__COLLECTION_SIZE, dtype=np.float)
         prev_step = initial_step
