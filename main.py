@@ -1,6 +1,7 @@
 # imports
 from crawler import Crawler
 from pageRank import PageRank
+import time
 
 
 class Main:
@@ -11,4 +12,6 @@ class Main:
         crawler = Crawler(self.seed_urls, self.base_url)
         page_rank = PageRank(crawler.get_internal_url_structure())
 
+start_time = time.time()
 Main()
+print("Execution time is %s seconds" % "%0.2f" % (time.time() - start_time))
