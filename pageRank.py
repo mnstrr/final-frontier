@@ -5,7 +5,7 @@ import re
 import textwrap
 
 # Better printing options
-np.set_printoptions(linewidth=1000)
+np.set_printoptions(linewidth=1000, precision=4)
 
 class PageRank:
     def __init__(self, internal_url_structure):
@@ -61,13 +61,14 @@ class PageRank:
         page_rank.append(initial_step)
 
         print('# PAGE RANK:')
-        print(initial_step)
+        print('           d01     d02     d03     d04     d05     d06     d07     d08     diff')
+        print('step: ' + str(step) + ' ' + str(initial_step[0]))
         # do...while loop
         while True:
             step += 1
             current_step = np.dot(prev_step, self.__transition_prob)
-            print(current_step)
             current_delta = np.sum(abs(current_step - prev_step))
+            print('step: ' + str(step) + ' ' + str(current_step[0]) + ' ' + str("%0.4f" % current_delta))
 
             page_rank.append(current_step)
             prev_step = current_step
