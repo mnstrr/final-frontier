@@ -48,4 +48,8 @@ class Indexer:
 
     def __normalize_tokens(self, token_list):
         token_list = [element.lower() for element in token_list]
-        return token_list
+        return token_list    def __print_tokens(self):
+        print('# TOKENS:')
+        for key, value in self.__tokens.items():
+            print(key + ': ' + ','.join(value))
+        print('--------------------')
