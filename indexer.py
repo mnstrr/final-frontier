@@ -50,7 +50,7 @@ class Indexer:
         return soup
 
     def __remove_interpunction(self, text):
-        text_neu = re.sub(r'[\,\.]', '', text)
+        text_neu = re.sub(r'[,\.]', '', text)
         return text_neu
 
     def __remove_stopwords(self, tokens, stopwords):
