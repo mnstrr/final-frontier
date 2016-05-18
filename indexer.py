@@ -3,7 +3,7 @@ import re
 class Indexer:
     def __init__(self, document_soups):
         self.__document_soups = document_soups
-        self.__token_lists = {}
+        self.__document_tokens = {}
         self.__STOPWORDS = [
             'd01', 'd02', 'd03', 'd04', 'd05', 'd06', 'd07', 'd08',
             'a', 'also', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'do',
@@ -11,10 +11,11 @@ class Indexer:
             'that', 'the', 'this', 'to', 'we'
         ]
         self.__each_soup()
+        self.__print_tokens()
 
     def __each_soup(self):
         for doc_ID, soup in self.__document_soups.items():
-            self.__tokenize(soup)
+            self.__document_tokens[doc_ID] = self.__tokenize(soup)
 
     def __tokenize(self, soup):
         document_tokens = []
@@ -62,6 +63,6 @@ class Indexer:
 
     def __print_tokens(self):
         print('# TOKENS:')
-        for key, value in self.__tokens.items():
-            print(key + ': ' + ','.join(value))
+        for key, value in self.__document_tokens.items():
+            print(key + ': ' + ', '.join(value))
         print('--------------------')

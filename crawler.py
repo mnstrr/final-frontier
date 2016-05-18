@@ -40,7 +40,6 @@ class Crawler:
         self.__tokens = self.__sort_keys_in_dict(self.__tokens)
         self.__internal_url_structure = self.__sort_values_in_dict(self.__sort_keys_in_dict(self.__internal_url_structure))
 
-        self.__print_tokens()
         self.__print_internal_url_structure()
         return document_soups
 
