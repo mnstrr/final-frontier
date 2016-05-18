@@ -25,22 +25,21 @@ class Indexer:
         # only iterate over text content, should be obvious, but what everest
         for text in strained_soup.body.find_all(text=True):
 
-            # ignore all links
-            if (text.parent.name != "a"):
+            # removes interpunction, in this case "." and ","
+            text = self.__remove_interpunction(str(text))
 
-                # removes interpunction, in this case "." and ","
-                text = self.__remove_interpunction(str(text))
+            # splits into separate words
+            token_list = text.split()
 
-                # splits into separate words
-                token_list = text.split()
+            # if list not empty
+            if token_list:
+                token_list = self.__normalize_tokens(token_list)
 
-                # if list not empty
-                if token_list:
-                    token_list = self.__normalize_tokens(token_list)
+                #concatenate all lists
+                document_tokens.extend(token_list)
 
-                    #concatenate all lists
-                    document_tokens.extend(token_list)
-        print(document_tokens)
+        document_tokens = self.__remove_stopwords(document_tokens, self.__STOPWORDS)
+
         return document_tokens
 
     def __remove_tags(self, unwanted_tags, soup):
