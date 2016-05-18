@@ -24,7 +24,7 @@ class Crawler:
                 soup = bs(page.read(), "html.parser")
                 self.__visited.append(current_url)
                 self.__frontier.pop(0)
-                key = soup.title.string
+                key = self.__find_doc_title(current_url, '/', '.')
                 self.__internal_url_structure[key] = []
 
                 soups[key] = soup
@@ -51,6 +51,11 @@ class Crawler:
         for key in dict:
             dict[key] = sorted(dict[key])
         return dict
+
+    def __find_doc_title(self, s, first, last):
+        start = s.rfind(first) + len(first)
+        end = s.rfind(last)
+        return s[start:end]
 
     def __print_internal_url_structure(self):
         print('# INTERNAL URL STRUCTURE:')
