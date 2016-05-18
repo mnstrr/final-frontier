@@ -58,12 +58,6 @@ class Crawler:
             print(key + ': ' + ','.join(value))
         print('--------------------')
 
-    def __print_tokens(self):
-        print('# TOKENS:')
-        for key, value in self.__tokens.items():
-            print(key + ': ' + ','.join(value))
-        print('--------------------')
-
     def get_internal_url_structure(self):
         return self.__internal_url_structure
 
