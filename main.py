@@ -1,6 +1,7 @@
 # imports
 from crawler import Crawler
 from pageRank import PageRank
+from indexer import Indexer
 import time
 
 
@@ -11,6 +12,8 @@ class Main:
     def __init__(self):
         crawler = Crawler(self.seed_urls, self.base_url)
         page_rank = PageRank(crawler.get_internal_url_structure())
+        indexer = Indexer(crawler.get_soups())
+
 
 start_time = time.time()
 Main()
