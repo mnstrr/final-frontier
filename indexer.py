@@ -3,11 +3,18 @@ import re
 class Indexer:
     def __init__(self, soups):
         self.__soups = soups
+        self.__token_lists = {}
+        self.__STOPWORDS = [
+            'd01', 'd02', 'd03', 'd04', 'd05', 'd06', 'd07', 'd08',
+            'a', 'also', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'do',
+            'for', 'have', 'is', 'in', 'it', 'of', 'or', 'see', 'so',
+            'that', 'the', 'this', 'to', 'we'
+        ]
         self.__each_soup()
 
     def __each_soup(self):
-        for key, value in self.__soups.items():
-            self.__tokenize(value)
+        for doc_ID, soup in self.__soups.items():
+            self.__tokenize(soup)
 
     def __tokenize(self, soup):
         document_tokens = []
@@ -46,9 +53,15 @@ class Indexer:
         text_neu = re.sub(r'[\,\.]', '', text)
         return text_neu
 
+    def __remove_stopwords(self, tokens, stopwords):
+        intersection = [itm for itm in tokens if itm not in stopwords]
+        return intersection
+
     def __normalize_tokens(self, token_list):
         token_list = [element.lower() for element in token_list]
-        return token_list    def __print_tokens(self):
+        return token_list
+
+    def __print_tokens(self):
         print('# TOKENS:')
         for key, value in self.__tokens.items():
             print(key + ': ' + ','.join(value))
