@@ -2,7 +2,6 @@
 from bs4 import BeautifulSoup as bs
 from collections import OrderedDict
 import urllib.request
-import re
 
 class Crawler:
     def __init__(self, seed_urls, base_url):
@@ -24,14 +23,15 @@ class Crawler:
                 soup = bs(page.read(), "html.parser")
                 self.__visited.append(current_url)
                 self.__frontier.pop(0)
-                key = self.__find_doc_title(current_url, '/', '.')
+                key = soup.title.string
                 self.__internal_url_structure[key] = []
 
                 document_soups[key] = soup
 
                 for internal_url in soup.find_all('a'):
-                    current_internal_url = self.__base_url + internal_url.get('href')
-                    value = self.__find_doc_title(current_internal_url, '/', '.')
+                    doc_title = internal_url.get('href')
+                    current_internal_url = self.__base_url + doc_title
+                    value = doc_title.rsplit('.')[0]
                     self.__internal_url_structure[key].append(value)
                     if current_internal_url not in self.__visited:
                         self.__frontier.append(current_internal_url)
@@ -50,11 +50,6 @@ class Crawler:
         for key in dict:
             dict[key] = sorted(dict[key])
         return dict
-
-    def __find_doc_title(self, s, first, last):
-        start = s.rfind(first) + len(first)
-        end = s.rfind(last)
-        return s[start:end]
 
     def __print_internal_url_structure(self):
         print('# INTERNAL URL STRUCTURE:')
