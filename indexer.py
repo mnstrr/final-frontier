@@ -1,8 +1,8 @@
 import re
 
 class Indexer:
-    def __init__(self, soups):
-        self.__soups = soups
+    def __init__(self, document_soups):
+        self.__document_soups = document_soups
         self.__token_lists = {}
         self.__STOPWORDS = [
             'd01', 'd02', 'd03', 'd04', 'd05', 'd06', 'd07', 'd08',
@@ -13,7 +13,7 @@ class Indexer:
         self.__each_soup()
 
     def __each_soup(self):
-        for doc_ID, soup in self.__soups.items():
+        for doc_ID, soup in self.__document_soups.items():
             self.__tokenize(soup)
 
     def __tokenize(self, soup):

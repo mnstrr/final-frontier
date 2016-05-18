@@ -12,10 +12,10 @@ class Crawler:
         self.__visited = []
         self.__internal_url_structure = {}
         self.__tokens = {}
-        self.__soups = self.__crawl()
+        self.__document_soups = self.__crawl()
 
     def __crawl(self):
-        soups = {}
+        document_soups = {}
         for url in self.__seed_urls:
             self.__frontier.append(self.__base_url + url)
             while len(self.__frontier) > 0:
@@ -27,7 +27,7 @@ class Crawler:
                 key = self.__find_doc_title(current_url, '/', '.')
                 self.__internal_url_structure[key] = []
 
-                soups[key] = soup
+                document_soups[key] = soup
 
                 for internal_url in soup.find_all('a'):
                     current_internal_url = self.__base_url + internal_url.get('href')
@@ -42,7 +42,7 @@ class Crawler:
 
         self.__print_tokens()
         self.__print_internal_url_structure()
-        return soups
+        return document_soups
 
     def __sort_keys_in_dict(self, dict):
         return OrderedDict(sorted(dict.items()))
@@ -67,5 +67,5 @@ class Crawler:
     def get_internal_url_structure(self):
         return self.__internal_url_structure
 
-    def get_soups(self):
-        return self.__soups
+    def get_document_soups(self):
+        return self.__document_soups

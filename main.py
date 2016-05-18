@@ -12,7 +12,7 @@ class Main:
     def __init__(self):
         crawler = Crawler(self.seed_urls, self.base_url)
         page_rank = PageRank(crawler.get_internal_url_structure())
-        indexer = Indexer(crawler.get_soups())
+        indexer = Indexer(crawler.get_document_soups())
 
 
 start_time = time.time()
