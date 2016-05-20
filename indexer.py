@@ -16,7 +16,7 @@ class Indexer:
         self.__occurrences = self.__count_occurrences()
         self.__doc_freq = self.__calculate_df(self.__occurrences)
 
-        self.__print_dictionary(self.__occurrences)
+        self.__print_occurrences()
         self.__print_dictionary(self.__doc_freq)
 
     def __each_soup(self):
@@ -116,6 +116,13 @@ class Indexer:
                 print(key + ": " + str(value))
         print('--------------------')
 
+    def __print_occurrences(self):
+        for key, value in self.__occurrences.items():
+            print(key + ": " + str(value))
+
+
     def __get_ordered_dict(self, dictionary):
         return OrderedDict(sorted(dictionary.items()))
+
+
 
