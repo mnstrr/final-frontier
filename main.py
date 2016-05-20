@@ -14,9 +14,10 @@ class Main:
         crawler = Crawler(self.seed_urls, self.base_url)
         page_rank = PageRank(crawler.get_internal_url_structure())
         indexer = Indexer(crawler.get_document_soups())
-        #searcher = Search(indexer.get_df_dict(), indexer.get_occurrences_dict())
+        searcher = Search(indexer.get_index())
 
 
 start_time = time.time()
 Main()
+print('--------------------')
 print("Execution time is %s seconds" % "%0.2f" % (time.time() - start_time))

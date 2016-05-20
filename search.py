@@ -1,21 +1,13 @@
 
 class Search:
-    def __init__(self, dict_dfs, dict_occur):
-        self.__occurrences = dict_occur
-        self.__doc_freq = dict_dfs
+    def __init__(self, index):
+        self.__index = index
+        print('Dummy Examples for token "document": ')
+        print(self.get_doc_freq('document'))
+        print(self.get_term_freq('document'))
 
-        self.__print_occurrences()
-        self.__print_dictionary(self.__doc_freq)
+    def get_doc_freq(self, key):
+        return self.__index[key][0]
 
-    def __print_dictionary(self, dictionary):
-        for key, value in dictionary.items():
-            if hasattr(value, '__iter__'):
-                print(key + ': ' + ', '.join(value))
-            else:
-                print(key + ": " + str(value))
-        print('--------------------')
-
-    def __print_occurrences(self):
-        for key, value in self.__occurrences.items():
-            print(key + ": " + str(value))
-        print('--------------------')
+    def get_term_freq(self, key):
+        return self.__index[key][1][0]
