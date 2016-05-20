@@ -70,48 +70,38 @@ class Indexer:
 
     def __count_in_document(self):
         token_list = {}
+        found = bool(False)
         # iterate over dict with all tokens
-        for key, value in self.__document_tokens.items():
+        for doc_id, value in self.__document_tokens.items():
             # iterate over tokens in one document
-            for token, token_val in enumerate(value):
+            for token_idx, token in enumerate(value):
 
                 # if token is already existing:
-                if token_val in token_list:
+                if token in token_list:
                     # get list:
-                    valu = token_list[token_val]
+                    valu = token_list[token]
                     # in same document:
-                    if valu[1][0] == key:
-                        valu[1] = (key, valu[1][1]+1)
+                    if valu[1][0] == doc_id:
+                        valu[1] = [doc_id, valu[1][1]+1]
                     # in other document:
                     else:
                         for i in range(1, len(valu)):
-                            print('valu -1 ')
-                            print(valu[-1])
-                            print('len '+str(len(valu)))
-                            if valu[i][0] == key:
+                            #if valu[i][0] == doc_id:
+                            if token in valu[i]:
                                 # if other document is existing
-                                valu[i] = (key, valu[i][1] + 1)
-                                valu.pop(i + 1)
-                                #break
-                            elif valu[-1]:
-                                print('elif, key:')
-                                print(key)
-                                print(valu)
-                                if valu[i][0] == key:
-                                    valu[i] = (key, valu[i][1] + 1)
-                                    #break
-                                elif valu[i][0] != key:
-                                    # if other document is not existing yet
-                                    valu.append((key, 1))
-                                    valu[0] += 1  # increase df
-                                    i += 1
-                                    print('after')
-                                    print(valu)
-
-
+                                valu[i] = [doc_id, valu[i][1] + 1]
+                                valu.remove([doc_id, valu[i][1]])
+                                found = True
+                        if found == False :
+                            # if other document is not existing yet
+                            valu.append([doc_id, 1])
+                            # increase df
+                            valu[0] += 1
+                        else:
+                            found = False
                 else:
                     # first entry [df, tuple(page, ocurance in doc)]
-                    token_list[token_val] = [1, (key, 1)]
+                    token_list[token] = [1, [doc_id, 1]]
 
         self.__print_tokens2(token_list)
         print('--------------------')
