@@ -14,7 +14,6 @@ class Indexer:
         self.__each_soup()
         self.__indexCount = {}
         self.__print_tokens()
-        self.__create_index()
 
         self.__occurrences = self.__count_occurrences()
         self.__doc_freq = self.__calculate_df(self.__occurrences)
