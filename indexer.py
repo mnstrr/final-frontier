@@ -13,7 +13,11 @@ class Indexer:
         ]
         self.__each_soup()
         self.__print_tokens()
-        self.__count_occurrences()
+        self.__occurrences = self.__count_occurrences()
+        self.__doc_freq = self.__calculate_df(self.__occurrences)
+
+        self.__print_dictionary(self.__occurrences)
+        self.__print_dictionary(self.__doc_freq)
 
     def __each_soup(self):
         for doc_ID, soup in self.__document_soups.items():
@@ -68,16 +72,19 @@ class Indexer:
 
                 occurrences[token] = doc_occurrences
 
-        ordered_occurrences = OrderedDict(sorted(occurrences.items()))
+        ordered_occurrences = self.__get_ordered_dict(occurrences)
+        return ordered_occurrences
 
+
+
+    def __calculate_df(self, occurrences):
         doc_freq = {}
-        for key, value in ordered_occurrences.items():
+
+        for key, value in occurrences.items():
             doc_freq[key] = len(value)
 
-        ordered_doc_freq = OrderedDict(sorted(doc_freq.items()))
-
-        self.__print_dictionary(ordered_occurrences)
-        self.__print_dictionary(ordered_doc_freq)
+        ordered_doc_freq = self.__get_ordered_dict(doc_freq)
+        return ordered_doc_freq
 
     def __remove_tags(self, unwanted_tags, soup):
         for tag in unwanted_tags:
@@ -109,4 +116,6 @@ class Indexer:
                 print(key + ": " + str(value))
         print('--------------------')
 
+    def __get_ordered_dict(self, dictionary):
+        return OrderedDict(sorted(dictionary.items()))
 
