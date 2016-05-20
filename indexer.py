@@ -14,12 +14,11 @@ class Indexer:
         self.__each_soup()
         self.__indexCount = {}
         self.__print_tokens()
-
-        self.__occurrences = self.__count_occurrences()
-        self.__doc_freq = self.__calculate_df(self.__occurrences)
-
-        self.__print_occurrences()
-        self.__print_dictionary(self.__doc_freq)
+        self.__index = self.__create_index()
+        #self.__term_freqs = self.__count_term_freqs()
+        #self.__doc_freqs = self.__count_doc_freqs(self.__term_freqs)
+        #self.__print_term_freqs()
+        #self.__print_dictionary(self.__doc_freqs)
 
     def __each_soup(self):
         for doc_ID, soup in self.__document_soups.items():
@@ -50,8 +49,8 @@ class Indexer:
         document_tokens = self.__remove_stopwords(document_tokens, self.__STOPWORDS)
         return document_tokens
 
-    def __count_occurrences(self):
-        occurrences = {}
+    def __count_term_freqs(self, index):
+        term_freqs = {}
 
         # iterate over dict {doc_id: [tokens]}
         for doc_id, tokens in self.__document_tokens.items():
@@ -59,9 +58,9 @@ class Indexer:
             for i, token in enumerate(tokens):
 
                 # if token is already existing:
-                if token in occurrences:
+                if token in term_freqs:
                     # get dict
-                    doc_occurrences = occurrences[token]
+                    doc_occurrences = term_freqs[token]
                 else:
                     # make new dict
                     doc_occurrences = {}
@@ -71,19 +70,22 @@ class Indexer:
                 else:
                     doc_occurrences[doc_id] = 1
 
-                occurrences[token] = doc_occurrences
+                #term_freqs[token] = doc_occurrences
+                index[token] = [doc_occurrences]
 
-        ordered_occurrences = self.__get_ordered_dict(occurrences)
-        return ordered_occurrences
+        #ordered_occurrences = self.__get_ordered_dict(term_freqs)
+        #return ordered_occurrences
+        return index
 
-    def __calculate_df(self, occurrences):
+    def __count_doc_freqs(self, term_freqs):
         doc_freq = {}
 
-        for token, doc_occurrences in occurrences.items():
+        for token, doc_occurrences in term_freqs.items():
             doc_freq[token] = len(doc_occurrences)
 
-        ordered_doc_freq = self.__get_ordered_dict(doc_freq)
-        return ordered_doc_freq
+        #ordered_doc_freq = self.__get_ordered_dict(doc_freq)
+        #return ordered_doc_freq
+        return doc_freq
 
     def __remove_tags(self, unwanted_tags, soup):
         for tag in unwanted_tags:
@@ -115,8 +117,8 @@ class Indexer:
                 print(key + ": " + str(value))
         print('--------------------')
 
-    def __print_occurrences(self):
-        for key, value in self.__occurrences.items():
+    def __print_term_freqs(self):
+        for key, value in self.__term_freqs.items():
             print(key + ": " + str(value))
         print('--------------------')
 
@@ -125,7 +127,14 @@ class Indexer:
         return OrderedDict(sorted(dictionary.items()))
 
     def get_df_dict(self):
-        return self.__doc_freq
+        return self.__doc_freqs
 
     def get_occurrences_dict(self):
-        return self.__occurrences
+        return self.__term_freqs
+
+
+    def __create_index(self):
+        index = {}
+        index = self.__count_term_freqs(index)
+        #doc_freqs = self.__count_doc_freqs(term_freqs)
+        print('')
