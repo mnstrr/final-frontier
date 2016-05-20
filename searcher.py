@@ -1,5 +1,5 @@
 
-class Search:
+class Searcher:
     def __init__(self, index):
         self.__index = index
         print('Dummy Examples for token "document": ')
