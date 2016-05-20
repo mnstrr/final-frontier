@@ -12,6 +12,7 @@ class Indexer:
         ]
         self.__each_soup()
         self.__print_tokens()
+        self.__create_index()
 
     def __each_soup(self):
         for doc_ID, soup in self.__document_soups.items():
@@ -66,3 +67,11 @@ class Indexer:
         for key, value in self.__document_tokens.items():
             print(key + ': ' + ', '.join(value))
         print('--------------------')
+
+    def __create_index(self):
+        index = {}
+        doc_freq = 0
+        for key in self.__document_tokens:
+            for token in self.__document_tokens[key]:
+                index[token] = []
+                print(token)
