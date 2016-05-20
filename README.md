@@ -6,5 +6,5 @@ project to create a basic search-engine in python
 - UE1
 	- [x] Crawling
 	- [x] PageRank
-	- [ ] Indexer
+	- [x] Indexer
 	- [ ] Combine PageRank & Indexer
