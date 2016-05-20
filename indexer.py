@@ -4,16 +4,17 @@ from collections import OrderedDict
 class Indexer:
     def __init__(self, document_soups):
         self.__STOPWORDS = ['d01', 'd02', 'd03', 'd04', 'd05', 'd06', 'd07', 'd08', 'a', 'also', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'do', 'for', 'have', 'is', 'in', 'it', 'of', 'or', 'see', 'so', 'that', 'the', 'this', 'to', 'we']
-        self.__document_tokens = {}
-        self.__tokenize_each_soup(document_soups)
+        self.__document_tokens = self.__tokenize_each_soup(document_soups)
         self.__print_tokens()
         self.__index = self.__create_index()
         self.__print_index()
 
-
     def __tokenize_each_soup(self, document_soups):
+        document_tokens = {}
         for doc_ID, soup in document_soups.items():
-            self.__document_tokens[doc_ID] = self.__tokenize(soup)
+            document_tokens[doc_ID] = self.__tokenize(soup)
+
+        return document_tokens
 
     def __tokenize(self, soup):
         document_tokens = []
