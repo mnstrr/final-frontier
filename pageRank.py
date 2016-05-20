@@ -61,6 +61,7 @@ class PageRank:
         print('# PAGE RANK:')
         print('           d01     d02     d03     d04     d05     d06     d07     d08     diff')
         print('step: ' + str(step) + ' ' + str(initial_step[0]))
+
         # do...while loop
         while True:
             step += 1
