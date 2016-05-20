@@ -63,6 +63,14 @@ class Indexer:
 
     def __print_tokens(self):
         print('# TOKENS:')
-        for key, value in self.__document_tokens.items():
-            print(key + ': ' + ', '.join(value))
+        self.__print_dictionary(self.__document_tokens)
+
+    def __print_dictionary(self, dictionary):
+        for key, value in dictionary.items():
+            if hasattr(value, '__iter__'):
+                print(key + ': ' + ', '.join(value))
+            else:
+                print(key + ": " + str(value))
         print('--------------------')
+
+
