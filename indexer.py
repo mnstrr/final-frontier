@@ -1,4 +1,5 @@
 import re
+from collections import OrderedDict
 
 class Indexer:
     def __init__(self, document_soups):
@@ -13,7 +14,12 @@ class Indexer:
         self.__each_soup()
         self.__indexCount = {}
         self.__print_tokens()
-        self.__count_in_document()
+
+        self.__occurrences = self.__count_occurrences()
+        self.__doc_freq = self.__calculate_df(self.__occurrences)
+
+        self.__print_occurrences()
+        self.__print_dictionary(self.__doc_freq)
 
     def __each_soup(self):
         for doc_ID, soup in self.__document_soups.items():
@@ -44,6 +50,41 @@ class Indexer:
         document_tokens = self.__remove_stopwords(document_tokens, self.__STOPWORDS)
         return document_tokens
 
+    def __count_occurrences(self):
+        occurrences = {}
+
+        # iterate over dict {doc_id: [tokens]}
+        for doc_id, tokens in self.__document_tokens.items():
+            # iterate over tokens in one document
+            for i, token in enumerate(tokens):
+
+                # if token is already existing:
+                if token in occurrences:
+                    # get dict
+                    doc_occurrences = occurrences[token]
+                else:
+                    # make new dict
+                    doc_occurrences = {}
+
+                if doc_id in doc_occurrences:
+                    doc_occurrences[doc_id] += 1
+                else:
+                    doc_occurrences[doc_id] = 1
+
+                occurrences[token] = doc_occurrences
+
+        ordered_occurrences = self.__get_ordered_dict(occurrences)
+        return ordered_occurrences
+
+    def __calculate_df(self, occurrences):
+        doc_freq = {}
+
+        for token, doc_occurrences in occurrences.items():
+            doc_freq[token] = len(doc_occurrences)
+
+        ordered_doc_freq = self.__get_ordered_dict(doc_freq)
+        return ordered_doc_freq
+
     def __remove_tags(self, unwanted_tags, soup):
         for tag in unwanted_tags:
             for match in soup.find_all(tag):
@@ -63,54 +104,6 @@ class Indexer:
         return token_list
 
 
-
-
-
-
-
-    def __count_in_document(self):
-        token_list = {}
-        found = bool(False)
-        # iterate over dict with all tokens
-        for doc_id, value in self.__document_tokens.items():
-            # iterate over tokens in one document
-            for token_idx, token in enumerate(value):
-
-                # if token is already existing:
-                if token in token_list:
-                    # get list:
-                    valu = token_list[token]
-                    # in same document:
-                    if valu[1][0] == doc_id:
-                        valu[1] = [doc_id, valu[1][1]+1]
-                    # in other document:
-                    else:
-                        for i in range(1, len(valu)):
-                            #if valu[i][0] == doc_id:
-                            if token in valu[i]:
-                                # if other document is existing
-                                valu[i] = [doc_id, valu[i][1] + 1]
-                                valu.remove([doc_id, valu[i][1]])
-                                found = True
-                        if found == False :
-                            # if other document is not existing yet
-                            valu.append([doc_id, 1])
-                            # increase df
-                            valu[0] += 1
-                        else:
-                            found = False
-                else:
-                    # first entry [df, tuple(page, ocurance in doc)]
-                    token_list[token] = [1, [doc_id, 1]]
-
-        self.__print_tokens2(token_list)
-        print('--------------------')
-
-
-
-
-
-
     def __count_tokens(self):
         print(self.__tokens)
         # for key, value in self.__soups.items():
@@ -128,8 +121,25 @@ class Indexer:
 
     def __print_tokens(self):
         print('# TOKENS:')
-        for key, value in self.__document_tokens.items():
-            print(key + ': ' + ', '.join(value))
+        self.__print_dictionary(self.__document_tokens)
+
+    def __print_dictionary(self, dictionary):
+        for key, value in dictionary.items():
+            if hasattr(value, '__iter__'):
+                print(key + ': ' + ', '.join(value))
+            else:
+                print(key + ": " + str(value))
         print('--------------------')
+
+    def __print_occurrences(self):
+        for key, value in self.__occurrences.items():
+            print(key + ": " + str(value))
+        print('--------------------')
+
+
+    def __get_ordered_dict(self, dictionary):
+        return OrderedDict(sorted(dictionary.items()))
+
+
 
 
