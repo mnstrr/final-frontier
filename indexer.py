@@ -12,7 +12,9 @@ class Indexer:
             'that', 'the', 'this', 'to', 'we'
         ]
         self.__each_soup()
+        self.__indexCount = {}
         self.__print_tokens()
+
         self.__occurrences = self.__count_occurrences()
         self.__doc_freq = self.__calculate_df(self.__occurrences)
 
@@ -122,5 +124,8 @@ class Indexer:
     def __get_ordered_dict(self, dictionary):
         return OrderedDict(sorted(dictionary.items()))
 
+    def get_df_dict(self):
+        return self.__doc_freq
 
-
+    def get_occurrences_dict(self):
+        return self.__occurrences

@@ -2,6 +2,7 @@
 from crawler import Crawler
 from pageRank import PageRank
 from indexer import Indexer
+from search import Search
 import time
 
 
@@ -13,6 +14,7 @@ class Main:
         crawler = Crawler(self.seed_urls, self.base_url)
         page_rank = PageRank(crawler.get_internal_url_structure())
         indexer = Indexer(crawler.get_document_soups())
+        search_it = Search(indexer.get_df_dict(), indexer.get_occurrences_dict())
 
 
 start_time = time.time()
