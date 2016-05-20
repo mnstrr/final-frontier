@@ -103,11 +103,8 @@ class Indexer:
         token_list = [element.lower() for element in token_list]
         return token_list
 
-
     def __count_tokens(self):
         print(self.__tokens)
-        # for key, value in self.__soups.items():
-            #self.__tokenize(value)
 
     def __print_tokens2(self, tokenlist):
         print('# TOKEN-LIST:')
@@ -140,6 +137,8 @@ class Indexer:
     def __get_ordered_dict(self, dictionary):
         return OrderedDict(sorted(dictionary.items()))
 
+    def get_df_dict(self):
+        return self.__doc_freq
 
-
-
+    def get_occurrences_dict(self):
+        return self.__occurrences
