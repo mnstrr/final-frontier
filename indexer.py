@@ -1,4 +1,5 @@
 import re
+from collections import OrderedDict
 
 class Indexer:
     def __init__(self, document_soups):
@@ -12,6 +13,7 @@ class Indexer:
         ]
         self.__each_soup()
         self.__print_tokens()
+        self.__count_occurrences()
 
     def __each_soup(self):
         for doc_ID, soup in self.__document_soups.items():
@@ -42,6 +44,40 @@ class Indexer:
         document_tokens = self.__remove_stopwords(document_tokens, self.__STOPWORDS)
 
         return document_tokens
+
+    def __count_occurrences(self):
+        occurrences = {}
+
+        # iterate over dict {doc_id: [tokens]}
+        for doc_id, tokens in self.__document_tokens.items():
+            # iterate over tokens in one document
+            for i, token in enumerate(tokens):
+
+                # if token is already existing:
+                if token in occurrences:
+                    # get dict
+                    doc_occurrences = occurrences[token]
+                else:
+                    # make new dict
+                    doc_occurrences = {}
+
+                if doc_id in doc_occurrences:
+                    doc_occurrences[doc_id] += 1
+                else:
+                    doc_occurrences[doc_id] = 1
+
+                occurrences[token] = doc_occurrences
+
+        ordered_occurrences = OrderedDict(sorted(occurrences.items()))
+
+        doc_freq = {}
+        for key, value in ordered_occurrences.items():
+            doc_freq[key] = len(value)
+
+        ordered_doc_freq = OrderedDict(sorted(doc_freq.items()))
+
+        self.__print_dictionary(ordered_occurrences)
+        self.__print_dictionary(ordered_doc_freq)
 
     def __remove_tags(self, unwanted_tags, soup):
         for tag in unwanted_tags:
