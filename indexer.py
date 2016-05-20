@@ -103,19 +103,6 @@ class Indexer:
         token_list = [element.lower() for element in token_list]
         return token_list
 
-    def __count_tokens(self):
-        print(self.__tokens)
-
-    def __print_tokens2(self, tokenlist):
-        print('# TOKEN-LIST:')
-        for key, value in tokenlist.items():
-            print(str(key) + ': ')
-            for idx, val in enumerate(value):
-                if idx == 0:
-                    print('df: ' + str(val))
-            print(value)
-        print('--------------------')
-
     def __print_tokens(self):
         print('# TOKENS:')
         self.__print_dictionary(self.__document_tokens)
