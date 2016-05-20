@@ -46,7 +46,6 @@ class Indexer:
                 document_tokens.extend(token_list)
 
         document_tokens = self.__remove_stopwords(document_tokens, self.__STOPWORDS)
-
         return document_tokens
 
     def __count_occurrences(self):
@@ -74,8 +73,6 @@ class Indexer:
 
         ordered_occurrences = self.__get_ordered_dict(occurrences)
         return ordered_occurrences
-
-
 
     def __calculate_df(self, occurrences):
         doc_freq = {}
@@ -119,6 +116,7 @@ class Indexer:
     def __print_occurrences(self):
         for key, value in self.__occurrences.items():
             print(key + ": " + str(value))
+        print('--------------------')
 
 
     def __get_ordered_dict(self, dictionary):
