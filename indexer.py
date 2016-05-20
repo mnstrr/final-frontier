@@ -80,8 +80,8 @@ class Indexer:
     def __calculate_df(self, occurrences):
         doc_freq = {}
 
-        for key, value in occurrences.items():
-            doc_freq[key] = len(value)
+        for token, doc_occurrences in occurrences.items():
+            doc_freq[token] = len(doc_occurrences)
 
         ordered_doc_freq = self.__get_ordered_dict(doc_freq)
         return ordered_doc_freq
