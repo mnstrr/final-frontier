@@ -5,21 +5,21 @@ class Searcher:
     def __init__(self, collection_size, index, document_tokens, search_terms):
         self.__COLLECTION_SIZE = collection_size
         self.__index = index
-        self.__doc_lengths = self.__calc_doc_lengthes(document_tokens)
+        self.__doc_lengths = self.__calc_doc_lengths(document_tokens)
         self.__calc_cosine_scores(search_terms)
 
     def __calc_cosine_scores(self, search_terms):
         print('# COSINE SCORES: ')
-        for term in search_terms:
+        for search_term in search_terms:
             length_query = 0
             doc_scores = {}
 
-            for splitted_term in term.split():
-                idf_query = self.__calc_idf(splitted_term)
+            for token in search_term.split():
+                idf_query = self.__calc_idf(token)
                 length_query += idf_query ** 2
 
-                for doc_id in self.__get_doc_occurrences(splitted_term):
-                    tf_idf_token = self.__calc_tf_idf(splitted_term, doc_id, idf_query)
+                for doc_id in self.__get_doc_occurrences(token):
+                    tf_idf_token = self.__calc_tf_idf(token, doc_id, idf_query)
                     if doc_id not in doc_scores:
                         doc_scores[doc_id] = 0
                     doc_scores[doc_id] += idf_query * tf_idf_token
@@ -32,7 +32,7 @@ class Searcher:
                 cosine_scores[doc_id] = cosine_score
                 cosine_scores_sorted = self.__convert_dict_to_sorted_list(cosine_scores)
 
-            print(term)
+            print(search_term)
             print(cosine_scores_sorted)
 
     def __convert_dict_to_sorted_list(self, dict):
@@ -48,16 +48,16 @@ class Searcher:
         tf_idf = (1+math.log(self.__get_term_freqs_in_doc(term, doc_id), 10)) * idf
         return tf_idf
 
-    def __calc_doc_lengthes(self, document_tokens):
-        doc_lengthes = {}
+    def __calc_doc_lengths(self, document_tokens):
+        doc_lengths = {}
         for doc_id in document_tokens:
             result = 0
             for token in set(document_tokens[doc_id]):
                     idf = self.__calc_idf(token)
                     tf_idf = self.__calc_tf_idf(token, doc_id, idf)
                     result += tf_idf ** 2
-            doc_lengthes[doc_id] = math.sqrt(result)
-        return doc_lengthes
+            doc_lengths[doc_id] = math.sqrt(result)
+        return doc_lengths
 
     def __get_doc_freq(self, key):
         return self.__index[key][0]
