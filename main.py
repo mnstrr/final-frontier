@@ -1,6 +1,6 @@
 # imports
 from crawler import Crawler
-from pageRank import PageRank
+from pageRanker import PageRank
 from indexer import Indexer
 from searcher import Searcher
 import time
