@@ -116,5 +116,5 @@ class Indexer:
     def get_index(self):
         return self.__index
 
-    def get_document_tokens(self):
+    def get_document_terms(self):
         return self.__document_tokens
