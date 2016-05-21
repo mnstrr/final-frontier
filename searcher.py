@@ -5,21 +5,21 @@ class Searcher:
     def __init__(self, collection_size, index, document_tokens, search_terms):
         self.__COLLECTION_SIZE = collection_size
         self.__index = index
-        self.__doc_lengthes = self.__calc_doc_lengthes(document_tokens)
+        self.__doc_lengths = self.__calc_doc_lengthes(document_tokens)
         self.__search_terms = search_terms
-        self.__analyze(self.__search_terms)
+        self.__calc_cosine_scores(self.__search_terms)
 
-    def __analyze(self, search_terms):
+    def __calc_cosine_scores(self, search_terms):
         print('# COSINE SCORES: ')
         for term in search_terms:
             idf_query = self.__calc_idf(term)
             length_query = self.__get_query_length(idf_query)
 
             cosine_scores = {}
-            for doc_id in self.__get_doc_ocurs(term):
+            for doc_id in self.__get_doc_occurrences(term):
                 tf_idf_token = self.__calc_tf_idf(term, doc_id, idf_query)
                 page_score = idf_query * tf_idf_token
-                cosine_score = page_score/self.__doc_lengthes[doc_id]/length_query
+                cosine_score = page_score/self.__doc_lengths[doc_id] / length_query
                 cosine_scores[doc_id] = cosine_score
 
             print(term)
@@ -50,7 +50,7 @@ class Searcher:
     def __get_doc_freq(self, key):
         return self.__index[key][0]
 
-    def __get_doc_ocurs(self, key):
+    def __get_doc_occurrences(self, key):
         return self.__index[key][1][0]
 
     def __get_term_freqs_in_doc(self, key, doc_id):
