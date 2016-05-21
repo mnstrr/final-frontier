@@ -9,7 +9,7 @@ import time
 class Main:
     base_url = 'http://home.htw-berlin.de/~iclassen/cmst/ue1/docs/'
     seed_urls = ['d01.html', 'd06.html', 'd08.html']
-    search_terms = ['tokens', 'index', 'classification']
+    search_terms = ['tokens', 'index', 'classification', 'tokens classification']
 
     def __init__(self):
         crawler = Crawler(self.seed_urls, self.base_url)
