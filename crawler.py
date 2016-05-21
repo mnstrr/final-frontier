@@ -12,6 +12,7 @@ class Crawler:
         self.__internal_url_structure = {}
         self.__tokens = {}
         self.__document_soups = self.__crawl()
+        self.__COLLECTION_SIZE = len(self.__internal_url_structure)
 
     def __crawl(self):
         document_soups = {}
@@ -62,3 +63,6 @@ class Crawler:
 
     def get_document_soups(self):
         return self.__document_soups
+
+    def get_collection_size(self):
+        return self.__COLLECTION_SIZE

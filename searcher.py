@@ -1,39 +1,53 @@
 import numpy as np
+import math
 
 class Searcher:
-    def __init__(self, index):
+    def __init__(self, index, document_tokens, collection_size, search_terms):
         self.__index = index
+        self.__docs = document_tokens
+        #self.__doc_lengthes = self.__calc_doc_lengthes(document_tokens)
+        self.__COLLECTION_SIZE = collection_size
+        self.__search_terms = search_terms
+        self.__analyze(self.__search_terms)
 
-        print('Dummy Examples for token "document": ')
-        print(self.__get_doc_freq('document'))
-        print(self.__get_term_freq('document'))
+    def __analyze(self, search_terms):
+        for term in search_terms:
+            idf_query = self.__calc_idf(term)
+            length_query = self.__get_query_length(idf_query)
 
-        my_vector = np.array([1,2,3,4,5])
-        print(self.__get_query_length(my_vector))
+            for doc_id in self.__get_doc_ocurs(term):
+                tf_idf_token = self.__calc_tf_idf(term, doc_id, idf_query)
+                page_score = idf_query * tf_idf_token
+                #cosine_score = page_score/doc_length/length_query
 
-    # TODO: log10(N/DF), N=Anzahl der Dokumente, DF=get_doc_freq
-    def __calc_token_idf(self, token):
-        token_idf = 0.2041
-        return token_idf
+    def __calc_idf(self, token):
+        term_idf = math.log((self.__COLLECTION_SIZE/self.__get_doc_freq(token)), 10)
+        return term_idf
 
-    # returns the magnitude of a vector, normalized
-    # this method takes a vector => np.array([1,2,3,4,5])
     def __get_query_length(self, query_vector):
         return np.linalg.norm(query_vector)
 
-    # 2) "_Represent each document as a weighted tf-idf vector" => TF-IDF für d04 berechnen
-    # TODO: (1 +  log10(term_freq)) * token_idf
-    def __calc_term_weight(self, token_or_term):
-        return 0.2656
+    def __calc_tf_idf(self, term, doc_id, idf):
+        term_weight = (1+math.log(self.__get_term_freqs_in_doc(term, doc_id), 10)) * idf
+        return term_weight
 
-    # 3) Page Score
-    # TODO: PAGE SCORE = IDF von 'tokens' aus Schritt 1 * TF-IDF aus Schritt 2 = 0.2041 * 0.2656 = 0.0542
-    def __calc_page_score(self, ):
-        return 0.0542
+    #def __calc_doc_lengthes(self, document_tokens):
+    #    doc_lengthes = {}
+    #    for doc_id in document_tokens:
+    #        result = 0
+    #        for token in document_tokens[doc_id]:
+    #                idf = self.__calc_idf(token)
+    #                tf_idf = self.__calc_tf_idf(token, doc_id, idf)
+    #                result += tf_idf ** 2
+    #        doc_lengthes[doc_id] = math.sqrt(result)
 
+    #        print('')
 
     def __get_doc_freq(self, key):
         return self.__index[key][0]
 
-    def __get_term_freq(self, key):
+    def __get_doc_ocurs(self, key):
         return self.__index[key][1][0]
+
+    def __get_term_freqs_in_doc(self, key, doc_id):
+        return self.__index[key][1][0][doc_id]
