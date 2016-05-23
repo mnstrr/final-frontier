@@ -96,6 +96,9 @@ class PageRank:
         print(transition_prob_matrix)
         print('--------------------')
 
+    def get_page_rank(self):
+        return self.__page_rank
+
 
 
 

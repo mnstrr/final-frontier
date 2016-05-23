@@ -15,7 +15,7 @@ class Main:
         crawler = Crawler(self.seed_urls, self.base_url)
         page_rank = PageRank(crawler.get_internal_url_structure(), crawler.get_collection_size())
         indexer = Indexer(crawler.get_document_soups())
-        searcher = Searcher(crawler.get_collection_size(), indexer.get_index(), indexer.get_document_terms(), self.search_terms)
+        searcher = Searcher(crawler.get_collection_size(), indexer.get_index(), indexer.get_document_terms(), self.search_terms, page_rank.get_page_rank())
 
 
 start_time = time.time()
