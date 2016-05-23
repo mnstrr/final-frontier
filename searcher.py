@@ -7,7 +7,7 @@ class Searcher:
     def __init__(self, collection_size, index, document_tokens, search_terms, page_rank):
         self.__COLLECTION_SIZE = collection_size
         self.__index = index
-        self.page_rank = page_rank
+        self.__page_rank = page_rank
         self.__doc_lengths = self.__calc_doc_lengths(document_tokens)
         self.__calc_cosine_scores(search_terms, False)
         self.__calc_cosine_scores(search_terms, True)
@@ -44,7 +44,7 @@ class Searcher:
                 for doc_id in cosine_scores:
                     doc_index = int(re.sub('[d0]', '', doc_id))
                     cosine_score = cosine_scores[doc_id]
-                    page_rank = self.page_rank[len(self.page_rank)-1][0][doc_index-1]
+                    page_rank = self.__page_rank[len(self.__page_rank) - 1][0][doc_index - 1]
                     cosine_scores[doc_id] = 2 * (cosine_score * page_rank) / (cosine_score + page_rank)
             cosine_scores_sorted = self.__convert_dict_to_sorted_list(cosine_scores)
 
