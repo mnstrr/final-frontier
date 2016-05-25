@@ -7,12 +7,12 @@ import re
 np.set_printoptions(linewidth=1000, precision=4)
 
 class PageRank:
-    def __init__(self, internal_url_structure):
+    def __init__(self, internal_url_structure, collection_size):
         self.__internal_url_structure = internal_url_structure
         self.__DAMPING_FACTOR = 0.95
         self.__TELEPORTATION_RATE = 1 - self.__DAMPING_FACTOR
         self.__DELTA = 0.04
-        self.__COLLECTION_SIZE = len(self.__internal_url_structure)
+        self.__COLLECTION_SIZE = collection_size
         self.__transition_prob_tmp = self.__calc_transition_prob_tmp()
         self.__transition_prob = self.__make_transition_prob_matrix()
         self.__page_rank = self.__calc_page_rank()
@@ -95,6 +95,9 @@ class PageRank:
         print('# FINAL TRANSITION PROB MATRIX:')
         print(transition_prob_matrix)
         print('--------------------')
+
+    def get_page_rank(self):
+        return self.__page_rank
 
 
 
