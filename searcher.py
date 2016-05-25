@@ -1,6 +1,7 @@
 import math
 import operator
 import re
+from collections import OrderedDict
 
 
 class Searcher:
@@ -45,7 +46,7 @@ class Searcher:
                     doc_index = int(re.sub('[d0]', '', doc_id))
                     cosine_score = cosine_scores[doc_id]
                     page_rank = self.__page_rank[len(self.__page_rank) - 1][0][doc_index - 1]
-                    cosine_scores[doc_id] = 2 * (cosine_score * page_rank) / (cosine_score + page_rank)
+                    cosine_scores[doc_id] = 2 * (cosine_score  * page_rank) / (cosine_score + page_rank)
             cosine_scores_sorted = self.__convert_dict_to_sorted_list(cosine_scores)
 
             print('"' + search_term+'":')
@@ -74,6 +75,13 @@ class Searcher:
                 tf_idf = self.__calc_tf_idf(token, doc_id, idf)
                 result += tf_idf ** 2
             doc_lengths[doc_id] = math.sqrt(result)
+
+        print('--------------------')
+        print('# DOC LENGTHS:')
+        ordered_lengths = self.__order_keys_in_dict(doc_lengths)
+        for key, value in ordered_lengths.items():
+            print(key + ": " + str(value))
+        print('--------------------')
         return doc_lengths
 
     def __get_doc_freq(self, key):
@@ -84,3 +92,6 @@ class Searcher:
 
     def __get_term_freqs_in_doc(self, key, doc_id):
         return self.__index[key][1][0][doc_id]
+
+    def __order_keys_in_dict(self, dictionary):
+        return OrderedDict(sorted(dictionary.items()))

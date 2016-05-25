@@ -106,9 +106,10 @@ class Indexer:
         self.__print_dict(self.__index)
 
     def __print_dict(self, dict):
+        print('--------------------')
         for key, value in dict.items():
             print(key + ' -> ' + str(value))
-        print('--------------------')
+
 
     def __order_keys_in_dict(self, dictionary):
         return OrderedDict(sorted(dictionary.items()))
